@@ -1,11 +1,9 @@
 
 
-export const BASE_URL_SERVIDOR = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+/* 📐 GPS Global da Obra */
+const local = window.location.hostname === 'localhost' || window.location.hostname === '192.168.15.7';
 
+export const BASE_URL_SERVIDOR = local 
+    ? "http://192.168.15.7:3001" 
+    : "https://react-vite12-github06.onrender.com";
 
-// console.log("");
-// console.log("🌐 ----------------------------------");
-// console.log("🌐 Componente - config/api.js");
-// console.log("🌐 ENDEREÇO DO SERVIDOR (server.js)");
-// console.log(`🌐 BASE_URL_SERVIDOR: ${BASE_URL_SERVIDOR}`);
-// console.log("🌐 ----------------------------------");

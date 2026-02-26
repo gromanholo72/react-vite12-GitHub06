@@ -16,7 +16,7 @@ import { ref, get } from "firebase/database";
 import { auth, db_realtime } from './firebaseConfig.js';
 
 /* 3. Logística e Rotas (As coordenadas da obra) */
-import { BASE_URL_SERVIDOR } from './config/api.js';
+// import { BASE_URL_SERVIDOR } from './config/api.js';
 
 
 
