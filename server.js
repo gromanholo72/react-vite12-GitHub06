@@ -43,7 +43,7 @@ const CONFIG = {
     // 🏠 No seu PC usa o IP. No Render usa a URL oficial.
     API_URL: isLocal 
         ? "http://192.168.15.7:3001" 
-        : "https://react-vite12-github03.onrender.com",
+        : "https://react-vite12-github06.onrender.com",
     
     NOME_SISTEMA: isLocal 
         ? "Sistema do Giuliano (Local - PC) 💻" 
