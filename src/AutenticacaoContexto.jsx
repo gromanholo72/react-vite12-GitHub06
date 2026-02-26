@@ -50,30 +50,30 @@ export const AutenticacaoProvider = ({ children }) => {
 
     // OBS: Pela natureza da constante esse estado {statusConexaoServidor} talvez nem seja usado
 
-    const [statusConexaoServidor, setStatusConexaoServidor] = useState(() => {
-        // 📐 O sistema verifica a sede antes de respirar
-        const valorInicial = BASE_URL_SERVIDOR;
+    // const [statusConexaoServidor, setStatusConexaoServidor] = useState(() => {
+        
+    //     const valorInicial = BASE_URL_SERVIDOR;
 
-        // console.log("");
-        // console.log("📐 🏛️ ----------------------------------");
-        // console.log("📐 🏛️ useState() - componente - 🏛️ AutenticacaoContexto.jsx");
-        // console.log("📐 🏛️ Lazy Initialization - 📡 statusConexaoServidor");
-        // console.log("📐 🏛️ 📡 Sede identificada: ", valorInicial);
-        // console.log("📐 🏛️ ----------------------------------");
+    //     console.log("");
+    //     console.log("📐 🏛️ ----------------------------------");
+    //     console.log("📐 🏛️ useState() - componente - 🏛️ AutenticacaoContexto.jsx");
+    //     console.log("📐 🏛️ Lazy Initialization - 📡 statusConexaoServidor");
+    //     console.log("📐 🏛️ 📡 Sede identificada: ", valorInicial);
+    //     console.log("📐 🏛️ ----------------------------------");
 
-        return valorInicial;
+    //     return valorInicial;
 
-    });
+    // });
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // console.log("");
-        // console.log("✨ 🏛️ ----------------------------------");
-        // console.log("✨ 🏛️ useEffect() - Monitor de Estabilidade");
-        // console.log("✨ 🏛️ 📡 Rota Ativa: ", statusConexaoServidor);
-        // console.log("✨ 🏛️ ----------------------------------");
+    //     console.log("");
+    //     console.log("✨ 🏛️ ----------------------------------");
+    //     console.log("✨ 🏛️ useEffect() - Monitor de Estabilidade");
+    //     console.log("✨ 🏛️ 📡 Rota Ativa: ", statusConexaoServidor);
+    //     console.log("✨ 🏛️ ----------------------------------");
 
-    }, [statusConexaoServidor]);
+    // }, [statusConexaoServidor]);
 
     // -------------------------
     // FIM - Link do servidor
@@ -182,32 +182,87 @@ export const AutenticacaoProvider = ({ children }) => {
     // INICIO - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
     // ----------------------------------------------------
 
-    const socket = useMemo(() => {
+    // const socket = useMemo(() => {
 
-        /* 🧱 Conectando usando a coordenada do seu .env */
+    //     const novaConexao = io(BASE_URL_SERVIDOR, {
 
-        const novaConexao = io(BASE_URL_SERVIDOR, {
+    //         transports: ["websocket"],
+    //         autoConnect: true
 
-            transports: ["websocket"],
-            autoConnect: true
+    //     });
 
-        });
+    //     console.log("");
+    //     console.log("🔵 🏛️ ----------------------------------");
+    //     console.log("🔵 🏛️ componente - 🏛️ AutenticacaoProvider.jsx");
+    //     console.log("🔵 🏛️ CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)");
+    //     console.log("🔵 🏛️ BASE_URL_SERVIDOR:", BASE_URL_SERVIDOR);
+    //     console.log("🔵 🏛️ VITE_NOME_SISTEMA:", import.meta.env.VITE_NOME_SISTEMA);
+    //     console.log("🔵 🏛️ ----------------------------------");
 
-        // console.log("");
-        // console.log("🔵 🏛️ ----------------------------------");
-        // console.log("🔵 🏛️ componente - 🏛️ AutenticacaoProvider.jsx");
-        // console.log("🔵 🏛️ CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)");
-        // console.log("🔵 🏛️ BASE_URL_SERVIDOR:", BASE_URL_SERVIDOR);
-        // console.log("🔵 🏛️ VITE_NOME_SISTEMA:", import.meta.env.VITE_NOME_SISTEMA);
-        // console.log("🔵 🏛️ ----------------------------------");
+    //     return novaConexao;
 
-        return novaConexao;
-
-    }, []); /* 📐 Trava a conexão para não repetir o aperto de mão */
+    // }, []); 
 
     // ----------------------------------------------------
     // FIM - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
     // ----------------------------------------------------
+
+
+
+
+// ----------------------------------------------------
+// INICIO - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
+// ----------------------------------------------------
+
+const socket = useMemo(() => {
+    
+    // 📐 👔 Detector de Canteiro em Tempo Real
+    const local = window.location.hostname === 'localhost' || window.location.hostname === '192.168.15.7';
+
+    // 📡 Se estiver no PC, usa a base local. Se estiver no Render, usa a URL oficial.
+    const ENDERECO_DINAMICO = local 
+        ? "http://192.168.15.7:3001" 
+        : "https://react-vite12-github06.onrender.com";
+
+    /* 🧱 Conectando usando a inteligência de rota */
+    const novaConexao = io(ENDERECO_DINAMICO, {
+        transports: ["websocket", "polling"], // 🚀 Polling ajuda na estabilidade do Render
+        autoConnect: true,
+        withCredentials: true
+    });
+
+    console.log("");
+    console.log("📐 🏛️ ----------------------------------");
+    console.log("📐 🏛️ componente - 🏛️ AutenticacaoProvider.jsx");
+    console.log("📐 🏛️ CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)");
+    console.log(`📐 🏛️ MODO: ${local ? "🏠 LOCAL (PC)" : "🌐 NUVEM (RENDER)"}`);
+    console.log("📐 🏛️ ENDEREÇO ATIVO:", ENDERECO_DINAMICO);
+    console.log("📐 🏛️ NOME DO SISTEMA:", import.meta.env.VITE_NOME_SISTEMA);
+    console.log("📐 🏛️ ----------------------------------");
+
+    return novaConexao;
+
+}, []); /* 📐 Trava a conexão para não repetir o aperto de mão */
+
+// ----------------------------------------------------
+// FIM - CONECTA COM O SERVIDOR PARA CHAT (MENSAGENS)
+// ----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
