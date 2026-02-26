@@ -17,58 +17,83 @@ import { db_realtime } from './src/firebaseConfig.js';
 // 🛠️ E não esqueça das ferramentas de ação:
 import { ref, get } from "firebase/database";
 
-
-
-
-
-
-
-
-
-// ----------------------------------
-// INICIO - CRIAR ADMINISTRADOR
-// ----------------------------------
-
-// "Poder do Administrador" (Admin SDK)
-
-/* 🧱 1. Importações com proteção de dados */
 import admin from "firebase-admin";
+
 import { createRequire } from "module";
 
-/* 🧱 le o arquivo .env */
-import dotenv from "dotenv";
-dotenv.config();
 
-// CONFIGURAÇÃO DO ADMINISTRADOR
 
+
+const requireJSON = createRequire(import.meta.url);
+const app = express();
+
+
+
+// ---------------------------------------------------------
+// 🏗️ 👔 1. PRIMEIRO: DETECTOR DE CANTEIRO (A Base de Tudo)
+// ---------------------------------------------------------
+// Esta linha deve vir ANTES de qualquer uso da variável isLocal
+const isLocal = process.env.RENDER === undefined;
+
+
+// ---------------------------------------------------------
+// 🏗️ 👔 DETECTOR DE CANTEIRO (Lógica Híbrida)
+// ---------------------------------------------------------
+const CONFIG = {
+    // 🏠 No seu PC usa o IP. No Render usa a URL oficial.
+    API_URL: isLocal 
+        ? "http://192.168.15.7:3001" 
+        : "https://react-vite12-github03.onrender.com",
+    
+    NOME_SISTEMA: isLocal 
+        ? "Sistema do Giuliano (Local - PC) 💻" 
+        : "Sistema do Giuliano (Externo - Render) 🌐",
+    
+    PORTA: process.env.PORT || 3001,
+    CHAVE_FIREBASE: process.env.GOOGLE_APPLICATION_CREDENTIALS || "./chave-privada-firebase.json"
+};
+
+console.log(`\n📐 🔵 O Prédio está mirando para: ${CONFIG.API_URL}`);
+
+
+// ---------------------------------------------------------
+// 🔑 INICIALIZAÇÃO DO FIREBASE (A Viga Mestra)
+// ---------------------------------------------------------
 try {
 
-    const requireJSON = createRequire(import.meta.url);
-    const serviceAccount = requireJSON(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    let serviceAccount;
+
+    // Se a chave começar com '{', o código entende que é o TEXTO do JSON (Modo Render)
+    if (CONFIG.CHAVE_FIREBASE.trim().startsWith('{')) {
+
+        serviceAccount = JSON.parse(CONFIG.CHAVE_FIREBASE);
+
+    } else {
+
+        // Caso contrário, ele abre o arquivo físico na sua pasta (Modo PC)
+        serviceAccount = requireJSON(CONFIG.CHAVE_FIREBASE);
+
+    }
 
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: "https://react-vite01-644c9-default-rtdb.firebaseio.com"
     });
 
-    console.log("");
-    console.log("📐 🔵 ----------------------------------");
-    console.log("📐 👔 Usina Local: Chave Mestra do FIreBase Carregada com Sucesso! ✅"); 
-    console.log("📐 📍 Caminho no .env:", process.env.GOOGLE_APPLICATION_CREDENTIALS);
-    console.log("📐 🔵 Status do Objeto:", serviceAccount ? "✅ Carregado" : "❌ Falhou");
-    console.log("📐 🎟️  Projeto:", serviceAccount.project_id);
-    console.log("📐 🔵 ----------------------------------");
+    console.log(`📐 🔵 ----------------------------------`);
+    console.log(`📐 👔 ${CONFIG.NOME_SISTEMA}`);
+    console.log(`📐 👔 FIREBASE CONECTADO COM SUCESSO! ✅`);
+    console.log(`📐 🔵 ----------------------------------`);
 
-} catch (error) {
-
-    console.log("");
-    console.log("📐 🔵 ----------------------------------");
-    console.log("📐 👔 ERRO AO CARREGAR CHAVE MESTRA ❌");
-    console.log("📐 🎟️ Detalhe:", error.message);
-    console.log("📐 🔵 carregandoModal = ", "Falha crítica do servidor (Chave Mestra do FIreBase).");
-    console.log("📐 🔵 ----------------------------------");
-
+} catch (erro) {
+    console.log(`📐 🔵 ----------------------------------`);
+    console.log(`📐 👔 ERRO CRÍTICO NA CONEXÃO FIREBASE ❌`);
+    console.log(`📐 🎟️ Detalhe: ${erro.message}`);
+    console.log(`📐 🔵 ----------------------------------`);
 }
+
+
+
 
 // CRIANDO ADMINISTRADOR
 
@@ -153,66 +178,7 @@ garantirAdministradorRaiz();
 
 
 
-/* // 🛡️ 3. AQUI! Implementação da Função de Vistoria (Middleware) */
-const verificarToken = (req, res, next) => {
 
-    const token = req.headers['authorization'];
-
-    if (!token) {
-        return res.status(401).json({ mensagem: "Acesso Negado: Sem crachá!" });
-    }
-
-    jwt.verify(token, CHAVE_MESTRA, (err, decoded) => {
-
-        if (err) {
-            console.log("");
-            console.log("🚨 ----------------------------------");
-            console.log("🚨 ALERTA NA PORTARIA");
-            
-            if (err.name === 'TokenExpiredError') {
-                console.log("🚨 STATUS: Acesso Negado: Prazo expirado! ❌");
-            } else {
-                console.log("🚨 STATUS: Crachá Inválido! 🚫");
-            }
-            console.log("🚨 ----------------------------------");
-
-            return res.status(403).json({ erro: "Acesso Negado: Prazo expirado" });
-        }
-
-        req.usuario = decoded;
-
-        next();
-
-    });
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// --------------------
-// INICIO - 🔥 CONST 🔥
-// -------------------
-
-// Se o .env nao enviar nada
-const PORTA = process.env.PORT || 3001;
-
-// 🏢 O Prédio e o servidor (Express) - momento em que você levanta as paredes
-const app = express();
-
-// --------------------
-// FIM - 🔥 CONST 🔥
-// -------------------
 
 
 
@@ -416,57 +382,6 @@ app.post('/login', async (req, res) => {
 
 
 
-
-
-
-
-
-
-/* // 🏠 Rota Protegida: Só entra quem tem crachá válido e cargo autorizado */
-app.get('/dados-dos-cards', verificarToken, async (req, res) => {
-    
-    console.log(`✅ VISTORIA: Acesso liberado para o CPF: ${req.usuario.cpef}`);
-    console.log(`✅ VISTORIA: Cargo do solicitante: ${req.usuario.func}`);
-
-    try {
-
-        /* // 📦 Buscando todos os usuários no almoxarifado (Firebase) */
-        const usuariosRef = ref(db_realtime, 'usuarios');
-        const snapshot = await get(usuariosRef);
-
-        if (snapshot.exists()) {
-
-            const todosUsuarios = snapshot.val();
-            
-            /* Transformamos o objeto do Firebase em uma lista amigável para os cards */
-            const listaFormatada = Object.keys(todosUsuarios).map(id => ({
-                cpef: id,
-                nome: todosUsuarios[id].nome,
-                func: todosUsuarios[id].func,
-                perm: todosUsuarios[id].perm,
-                situ: todosUsuarios[id].situ
-            }));
-
-            console.log(`📦 INFO: ${listaFormatada.length} usuários enviados para os cards.`);
-            
-            res.json({
-                mensagem: "Dados carregados com sucesso!",
-                usuarios: listaFormatada
-            });
-
-        } else {
-
-            res.status(404).json({ mensagem: "Nenhum morador encontrado na base." });
-
-        }
-
-    } catch (erro) {
-
-        // console.log("🚨 ERRO DE OBRA: Falha ao acessar o banco de dados.");
-        res.status(500).json({ erro: "Erro interno no servidor" });
-
-    }
-});
 
 
 
@@ -780,11 +695,11 @@ io.on('connection', (socket) => {
 
 
 
-httpServer.listen(PORTA, '0.0.0.0', () => {
+httpServer.listen(CONFIG.PORTA, '0.0.0.0', () => {
 
     console.log("")
     console.log("🏢 ----------------------")
-    console.log(`🏢 SERVIDOR/PREDIO RODANDO NA PORTA ${PORTA}`);
+    console.log(`🏢 SERVIDOR/PREDIO RODANDO NA PORTA ${CONFIG.PORTA}`);
     console.log("🏢 ----------------------")
     console.log("🏢 📢 Porta 5173 (🏠 Casa/React): Vite");
     console.log("🏢 📢 Porta 3001 (🏢 Prédio/Node): Socket.io")
