@@ -100,9 +100,26 @@ export default function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
-// --------------------------------------
+    // --------------------------------------
     // INICIO DO - Balao Dica Criar Conta
     // --------------------------------------
 
@@ -131,18 +148,44 @@ export default function App() {
 
     }, [exibirBalaoDicaCriarConta]);
 
-    useEffect(() => {
-        const visto = localStorage.getItem("dicaCriarConta_Vista_Global");
-        if (visto === "sim") {
-            setExibirBalaoDicaCriarConta(false);
-        } else {
-            setExibirBalaoDicaCriarConta(true);
-        }
-    }, []);
+
+
+
+
+
+
+
+
+    // useEffect(() => {
+    //     const visto = localStorage.getItem("dicaCriarConta_Vista_Global");
+    //     if (visto === "sim") {
+    //         setExibirBalaoDicaCriarConta(false);
+    //     } else {
+    //         setExibirBalaoDicaCriarConta(true);
+    //     }
+    // }, []);
+
+
+
+
+
+
 
     // --------------------------------------
     // FIM DO - Balao Dica Criar Conta
     // --------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1590,7 +1633,20 @@ export default function App() {
 
                     <Route path="/sobre" element={<Sobre />} /> 
                     <Route path="/contato" element={<Contato />} />
-                    <Route path="/logar" element={<Logar socket={socket} />} />
+
+
+                    <Route 
+                        path="/logar" 
+                        element={
+                            <Logar 
+                                socket={socket} 
+                                setExibirBalaoDicaCriarConta={setExibirBalaoDicaCriarConta} 
+                            />
+                        } 
+                    />
+
+
+
                     <Route path="/cadastrar" element={<Cadastrar socket={socket} />} />
 
 

@@ -13,7 +13,7 @@ import './Logar.css';
 
 
 
-export function Logar() {
+export function Logar({ setExibirBalaoDicaCriarConta }) {
 
 
 
@@ -83,6 +83,7 @@ export function Logar() {
         setMsgErro(texto);
         setMsgVisivel(true);
     
+
         /* 🚀 Localiza o container pela CLASSNAME e comanda a subida */
         const topo = document.querySelector('.container-externo-blindado');
         
@@ -106,6 +107,37 @@ export function Logar() {
             setTimeout(() => { 
 
                 setMsgErro(""); 
+
+
+
+
+
+                // ------------------------------------------------------------------
+                // 🚨 NOVO GATILHO: Inteligência do Balão de Criar Conta
+                // ------------------------------------------------------------------
+                const erroTexto = texto?.toLowerCase() || "";
+                
+                // 🕵️ Se a mensagem que a gaveta recebeu fala em "cadastrado" ou "encontrado"
+                if (erroTexto.includes("cadastrado") || erroTexto.includes("encontrado")) {
+                    console.log("📐 🎫 Detectado erro de cadastro na Gaveta. Acionando balão.");
+                    console.log("📐 ❓ Qual o tipo da ferramenta?", typeof setExibirBalaoDicaCriarConta);
+                    console.log("📐 ❓ Conteúdo da ferramenta:", setExibirBalaoDicaCriarConta);
+                    
+                    if (typeof setExibirBalaoDicaCriarConta === 'function') {
+                        // 🔓 Removemos o lacre global para garantir que o balão possa nascer
+                        localStorage.removeItem("dicaCriarConta_Vista_Global");
+                        
+                        // 🎈 Abrimos o balão para guiar o usuário para o cadastro
+                        setExibirBalaoDicaCriarConta(true);
+                    }
+                }
+
+
+
+
+
+
+
 
                 if (deveRedirecionar) {
 
@@ -388,6 +420,19 @@ export function Logar() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
     const mascaraCpef = (e) => {
