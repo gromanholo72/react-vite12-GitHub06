@@ -230,11 +230,25 @@ const popularCamposEndereco = (dados) => {
 
 
     // 🛠️ MÁSCARA DE CEP
-    const lidarComCep = (e) => {
+    const mascaraCep = (e) => {
+        // 🧱 Se a obra estiver travada (podeEditar = false), não faz nada
         if (!podeEditar) return;
+    
+        // 🧱 Passo 1: Captura o valor e limpa tudo o que não é número
         let v = e.target.value.replace(/\D/g, '');
-        if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2-$3');
-        else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
+    
+        // 🧱 Passo 2: Limita a 8 números (o tamanho real do CEP)
+        if (v.length > 8) v = v.substring(0, 8);
+    
+        // 🧱 Passo 3: Aplica o ponto e o traço (Padrão: 00.000-000)
+        // Primeiro o ponto: 00.000
+        v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+        // Depois o traço: 00.000-000
+        v = v.replace(/(\d{3})(\d)/, '$1-$2');
+    
+        // 📐 👔 console.log("📐 📍 cep = ", v);
+    
+        // 🧱 Passo 4: Atualiza o Estado (Sua variável 'cep')
         setCep(v);
     };
 
@@ -356,7 +370,17 @@ const popularCamposEndereco = (dados) => {
                                 
                         <div className="Campo flex-cep">
                             <label>CEP</label>
-                            <input type="text" disabled={!podeEditar} value={cep} onChange={lidarComCep} maxLength="10" />
+                            <input 
+                                type="text" 
+                                name="cepe"
+                                placeholder="00.000-000"
+                                disabled={!podeEditar} 
+                                value={cep} 
+                                onChange={mascaraCep} 
+                                autoComplete="postal-code"
+                                maxLength="10" 
+                                required
+                            />
                         </div>
 
                         <div className="Campo flex-rua">
@@ -366,7 +390,13 @@ const popularCamposEndereco = (dados) => {
     
                         <div className="Campo flex-numero">    
                             <label>Nº</label>
-                            <input type="text" disabled={!podeEditar} value={numero} onChange={(e) => setNumero(e.target.value)} />   
+                            <input 
+                                type="text" 
+                                disabled={!podeEditar} 
+                                value={numero} 
+                                onChange={(e) => 
+                                setNumero(e.target.value)} />  
+
                         </div>
 
                         <div className="Campo flex-bairro "> 
