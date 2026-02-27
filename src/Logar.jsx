@@ -457,8 +457,8 @@ export function Logar() {
                             name="cpef" 
                             value={credenciais.cpef}
                             onChange={handleChange} 
-                            autocomplete="username"
-                            placeholder="Digite seu nome"
+                            autoComplete="username"
+                            placeholder="Digite seu CPF"
                             required 
                         /> 
                     </div>
@@ -470,6 +470,8 @@ export function Logar() {
                             className={`${veioDoCadastro ? 'input-pulsar' : ''}`}
                             name="senh" 
                             value={credenciais.senh}
+                            placeholder="Digite sua senha"
+                            autoComplete="current-password"
                             onChange={handleChange} 
                             // required 
                         />
