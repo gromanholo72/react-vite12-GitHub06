@@ -454,10 +454,11 @@ export function Logar() {
                         <label>CPF:</label>
                         <input 
                             type="text" 
-                            // className={`${veioDoCadastro ? 'input-pulsar' : ''}`}
                             name="cpef" 
                             value={credenciais.cpef}
                             onChange={handleChange} 
+                            autocomplete="username"
+                            placeholder="Digite seu nome"
                             required 
                         /> 
                     </div>

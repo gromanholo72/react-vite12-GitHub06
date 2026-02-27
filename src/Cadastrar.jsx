@@ -660,6 +660,7 @@ export function Cadastrar() {
                                 name="nome" // 🔑 Etiqueta para o Escriturário
                                 placeholder="Nome Completo"
                                 value={novoUsuario.nome}
+                                autoComplete="name"
                                 onChange={handleChange} 
                                 required
                             />
@@ -674,6 +675,7 @@ export function Cadastrar() {
                                 placeholder="000.000.000-00"
                                 value={novoUsuario.cpef}
                                 onChange={handleChange} 
+                                autoComplete="username"
                                 required
                             />
                         </div>
@@ -686,6 +688,7 @@ export function Cadastrar() {
                                 name="mail" // 🔑 Etiqueta para o Escriturário
                                 placeholder="exemplo@email.com"
                                 value={novoUsuario.mail} 
+                                autoComplete="email"
                                 onChange={handleChange} 
                                 required
                             />   
@@ -700,6 +703,7 @@ export function Cadastrar() {
                                 placeholder="(00) 00000-0000"
                                 value={novoUsuario.fone} 
                                 onChange={handleChange} 
+                                autoComplete="tel"
                                 required
                             />   
                         </div> 

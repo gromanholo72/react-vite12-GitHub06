@@ -170,14 +170,25 @@ const popularCamposCnpj = (dados) => {
 
 
     // 🛠️ MÁSCARA DE CNPJ
-    const lidarComCnpj = (e) => {
+    const mascaraCnpj = (e) => {
+        // 🧱 Se a obra estiver travada (não pode editar), não faz nada
         if (!podeEditar) return;
+        
+        // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
         let v = e.target.value.replace(/\D/g, '');
+
+        // 🧱 Passo 2: Corte (Limita aos 14 números do CNPJ)
         if (v.length > 14) v = v.substring(0, 14);
-        v = v.replace(/^(\d{2})(\d)/, '$1.$2');
-        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-        v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
-        v = v.replace(/(\d{4})(\d)/, '$1-$2');
+
+        // 🧱 Passo 3: Assentamento (Aplica a pontuação progressiva)
+        v = v.replace(/^(\d{2})(\d)/, '$1.$2');             // 00.
+        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); // 00.000.
+        v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');           // 00.000.000/
+        v = v.replace(/(\d{4})(\d)/, '$1-$2');              // 00.000.000/0000-00
+
+        // 📐 👔 console.log("📐 🏢 CNPJ Formatado = ", v);
+        
+        // 🧱 Passo 4: Atualiza a Planta (Estado)
         setCnpj(v);
     };
 
@@ -251,7 +262,16 @@ const popularCamposCnpj = (dados) => {
 
                             <div className="flex-cnpj">
                                 <label>CNPJ (via BrasilAPI)</label>
-                                <input type="text" disabled={!podeEditar} value={cnpj} onChange={lidarComCnpj} placeholder="00.000.000/0000-00" />
+                                <input 
+                                    type="text" 
+                                    name="cnpj"
+                                    placeholder="00.000.000/0000-00"
+                                    disabled={!podeEditar} 
+                                    value={cnpj} 
+                                    onChange={mascaraCnpj} 
+                                    autoComplete="organization" /* ✨ Sinal para o celular sugerir dados de empresas */
+                                    required
+                                />
                             </div>
 
                             <div className="flex-razao">
