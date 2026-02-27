@@ -390,6 +390,44 @@ export function Logar() {
 
 
 
+    const mascaraCpef = (e) => {
+        // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
+        let v = e.target.value.replace(/\D/g, '');
+    
+        // 🧱 Passo 2: Corte (CPF tem 11 números)
+        if (v.length > 11) v = v.substring(0, 11);
+    
+        // 🧱 Passo 3: Assentamento (Padrão 000.000.000-00)
+        v = v.replace(/(\d{3})(\d)/, '$1.$2');       
+        v = v.replace(/(\d{3})(\d)/, '$1.$2');       
+        v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); 
+    
+        // 📐 🎫 console.log("📐 👔 cpef formatado = ", v);
+    
+        // 🧱 Passo 4: Atualiza o Objeto CORRETO (credenciais)
+        setCredenciais({
+            ...credenciais, // ⬅️ Mantém o que já existia (ex: senha)
+            cpef: v        // ⬅️ Atualiza apenas o CPF
+        });
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*  ------------------------------------- */
@@ -456,9 +494,10 @@ export function Logar() {
                             type="text" 
                             name="cpef" 
                             value={credenciais.cpef}
-                            onChange={handleChange} 
+                            onChange={mascaraCpef} 
                             autoComplete="username"
                             placeholder="Digite seu CPF"
+                             maxLength="14"
                             required 
                         /> 
                     </div>
