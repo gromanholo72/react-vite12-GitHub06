@@ -528,7 +528,70 @@ export function Cadastrar() {
 
 
 
+
+
+
+
+
+    const mascaraCpef = (e) => {
+        // 🧱 Passo 1: Limpeza (Remove tudo o que não é número)
+        let v = e.target.value.replace(/\D/g, '');
     
+        // 🧱 Passo 2: Corte (CPF tem 11 números)
+        if (v.length > 11) v = v.substring(0, 11);
+    
+        // 🧱 Passo 3: Assentamento (Padrão 000.000.000-00)
+        v = v.replace(/(\d{3})(\d)/, '$1.$2');       // 000.
+        v = v.replace(/(\d{3})(\d)/, '$1.$2');       // 000.000.
+        v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // 000.000.000-00
+    
+        // 📐 👔 console.log("📐 🎫 cpef formatado = ", v);
+    
+        // 🧱 Passo 4: Atualiza o Objeto (Preservando os outros campos)
+        setNovoUsuario({
+            ...novoUsuario,
+            cpef: v
+        });
+    };
+
+
+
+
+
+    const mascaraTelefone = (e) => {
+        // 🧱 Passo 1: Limpeza total
+        let v = e.target.value.replace(/\D/g, '');
+    
+        // 🧱 Passo 2: Corte (Máximo 11 números para celular com DDD)
+        if (v.length > 11) v = v.substring(0, 11);
+    
+        // 🧱 Passo 3: Assentamento (Padrão (00) 00000-0000)
+        v = v.replace(/^(\d{2})(\d)/g, "($1) $2");    // Coloca parênteses no DDD
+        v = v.replace(/(\d{5})(\d)/, "$1-$2");      // Coloca o traço no celular
+    
+        // 📐 👔 console.log("📐 📱 fone formatado = ", v);
+    
+        // 🧱 Passo 4: Atualiza o Objeto do Novo Usuário
+        setNovoUsuario({
+            ...novoUsuario,
+            fone: v
+        });
+    };
+
+
+    
+
+
+    const mascaraSenha = (e) => {
+        // 🧱 Remove espaços em branco (senha não deve ter espaços)
+        let v = e.target.value.replace(/\s/g, '');
+    
+        // 💾 Atualiza o Objeto
+        setNovoUsuario({
+            ...novoUsuario,
+            senh: v
+        });
+    };
 
 
 
@@ -674,8 +737,9 @@ export function Cadastrar() {
                                 name="cpef" // 🔑 Etiqueta para o Escriturário
                                 placeholder="000.000.000-00"
                                 value={novoUsuario.cpef}
-                                onChange={handleChange} 
+                                onChange={mascaraCpef} 
                                 autoComplete="username"
+                                maxLength="14"
                                 required
                             />
                         </div>
@@ -702,8 +766,9 @@ export function Cadastrar() {
                                 name="fone" // 🔑 Etiqueta para o Escriturário
                                 placeholder="(00) 00000-0000"
                                 value={novoUsuario.fone} 
-                                onChange={handleChange} 
+                                onChange={mascaraTelefone}
                                 autoComplete="tel"
+                                maxLength="15"
                                 required
                             />   
                         </div> 
@@ -736,8 +801,11 @@ export function Cadastrar() {
                                 <input 
                                     type={mostrarSenha ? "text" : "password"} 
                                     name="senh"
+                                    // placeholder="No mínimo 4 caracteres"
                                     value={novoUsuario.senh} 
-                                    onChange={handleChange}
+                                    onChange={mascaraSenha}
+                                    autoComplete="new-password"
+                                    // minLength="4"
                                     required 
                                 />
 

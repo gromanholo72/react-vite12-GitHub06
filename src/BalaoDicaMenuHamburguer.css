@@ -2,13 +2,13 @@
 /* -------------------------------------------------------------------- */
 /* 🧱 ESTRUTURA DE ANCORAGEM (CONTAINER PAI)                             */
 /* -------------------------------------------------------------------- */
-.container-externo-blindado-sincronizado {
+/* .container-externo-blindado-sincronizado {
     position: relative;
     width: fit-content;
     height: fit-content;
     display: inline-block;
-    z-index: 2000; /* Garante que a sinalização fique no topo da obra */
-}
+    z-index: 2000; 
+} */
 
 /* -------------------------------------------------------------------- */
 /* 🍔 BOTÃO HAMBURGUER (ESTILO BASE)                                     */
@@ -56,15 +56,15 @@
 /* -------------------------------------------------------------------- */
 /* ✨ EFEITO DE PULSAÇÃO (ATIVADO VIA ESTADO)                           */
 /* -------------------------------------------------------------------- */
-.btn-menu-base.pulsar-ativo {
+/* .btn-menu-base.pulsar-ativo { */
     
     /* 🚫 Sem energia no pulso no desktop */
-    animation: none; 
+    /* animation: none;  */
     /* box-shadow: none; */
 
 
     /* animation: pulsoMestreSincronizado 2s infinite ease-in-out; */
-}
+/* } */
 
 /* -------------------------------------------------------------------- */
 /* 🎈 BALÃO DE DICA (O CARD FLUTUANTE)                                  */
@@ -75,8 +75,8 @@
     display: none;
 
     position: absolute;
-    top: 65px;        
-    left: -14px;     
+    top: 70px;        
+    left: 0px;     
     
     /* Visual Premium */
     background: linear-gradient(135deg, #ff4b2b, #ff416c);

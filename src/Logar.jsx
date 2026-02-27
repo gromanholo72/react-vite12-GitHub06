@@ -473,7 +473,7 @@ export function Logar() {
                             placeholder="Digite sua senha"
                             autoComplete="current-password"
                             onChange={handleChange} 
-                            // required 
+                            required 
                         />
                     </div>
 

@@ -863,33 +863,79 @@ export default function App() {
 
 
 
+    {/* 🍔 O Botão Hambúrguer assume o controle direto aqui */}
+    <button 
+        className={`btn-menu-base ${exibirBalaoDicaMenuHamburguer ? 'pulsar-ativo' : ''}`}
+        onClick={() => {
+            // 🔐 1. Lacre da Dica: Se clicar com o balão aberto, desativa para sempre
+            if (exibirBalaoDicaMenuHamburguer) {
+                const chaveGlobal = "dicaMenuHamburguer_Vista_Global";
+                localStorage.setItem(chaveGlobal, "sim");
+                setExibirBalaoDicaMenuHamburguer(false);
+                console.log("📐 🔵 Lacre Global via Botão.");
+            }
+
+            // 🍔 2. Ferramenta de Trabalho: secaoAberta (null ou 'menu-aberto')
+            if (secaoAberta === 'menu-aberto') {
+                console.log("📐 🔵 Fechando menu");
+                setSecaoAberta(null);
+            } else {
+                console.log("📐 🔵 Abrindo menu");
+                setSecaoAberta('menu-aberto');
+            }
+        }}
+    >
+        ☰
+    </button>
+
+    {/* 🎈 O Balão de Dica (Agora apenas o componente visual) */}
+    <BalaoDicaMenuHamburguer 
+        exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer} 
+    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 {/* -------------------------------------------------------------------- */}
                 {/* IICIO do -🍔 Menu Hamburguer Animado com Sinalização para Visitante */ }
                 {/* -------------------------------------------------------------------- */}
 
-                <BalaoDicaMenuHamburguer 
+                {/* <BalaoDicaMenuHamburguer 
                     exibirBalaoDicaMenuHamburguer={exibirBalaoDicaMenuHamburguer}
                     setExibirBalaoDicaMenuHamburguer={setExibirBalaoDicaMenuHamburguer}
                     dadosToken={dadosToken}
-                    /* ✨ Ação Única: Grava um visto geral que serve para todos */
+                   
                     acaoAbrirMenu={() => {
-                        // 1. Abre o menu 🍔
+                        
                         setSecaoAberta('menu-aberto');
 
-                        // 2. 🔐 Lacre Global: Chave única, sem CPF
                         const chaveGlobal = "dicaMenuHamburguer_Vista_Global";
 
-                        // 3. ✍️ Grava o visto definitivo no navegador
                         localStorage.setItem(chaveGlobal, "sim");
 
-                        // 4. 🔵 Esconde o balão
                         setExibirBalaoDicaMenuHamburguer(false);
 
                         console.log("📐 🔵 Lacre Global realizado. Dica desativada para este navegador.");
+
                     }}
+
                     secaoAberta={secaoAberta} 
                     setSecaoAberta={setSecaoAberta} 
-                />
+                /> */}
 
                 {/* -------------------------------------------------------------------- */}
                 {/* FIM do -🍔 Menu Hamburguer Animado com Sinalização para Visitante */ }
