@@ -404,7 +404,7 @@ const popularCamposEndereco = (dados) => {
                             <input 
                                 type="text" 
                                 name="nume"
-                                placeholder="S/N"
+                                // placeholder="S/N"
                                 disabled={!podeEditar} 
                                 value={numero} 
                                 onChange={mascaraNume} 

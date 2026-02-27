@@ -71,7 +71,7 @@ import { Chat } from './Chat';
 import { BalaoDica } from './componentes/BalaoDica';
 
 import {BalaoDicaMenuHamburguer} from './BalaoDicaMenuHamburguer';
-
+import {BalaoDicaCriarConta} from './BalaoDicaCriarConta';
 
 
 
@@ -98,6 +98,51 @@ export default function App() {
 
 
 
+
+
+    
+
+// --------------------------------------
+    // INICIO DO - Balao Dica Criar Conta
+    // --------------------------------------
+
+    const [exibirBalaoDicaCriarConta, setExibirBalaoDicaCriarConta] = useState(() => {
+        
+        const valorInicial = false;
+
+        console.log("");
+        console.log("📐 🧿 ----------------------------------");
+        console.log("📐 🧿 useState() - componente - 🧿 App.jsx");
+        console.log("📐 🧿 Lazy Initialization - 🎫 exibirBalaoDicaCriarConta");
+        console.log("📐 🧿 🎫 exibirBalaoDicaCriarConta nasceu como = ", valorInicial);
+        console.log("📐 🧿 ----------------------------------");
+
+        return valorInicial;
+    });
+
+    useEffect(() => {
+
+        console.log("");
+        console.log("✨ 🧿 ----------------------------------");
+        console.log("✨ 🧿 useEffect() - Componente - 🧿 App.jsx");
+        console.log("✨ 🧿 🏷️ VARIAVEL MONITORADA QUANTO A MUDANCA");
+        console.log("✨ 🧿 🎫 exibirBalaoDicaCriarConta = ", exibirBalaoDicaCriarConta);
+        console.log("✨ 🧿 ----------------------------------");
+
+    }, [exibirBalaoDicaCriarConta]);
+
+    useEffect(() => {
+        const visto = localStorage.getItem("dicaCriarConta_Vista_Global");
+        if (visto === "sim") {
+            setExibirBalaoDicaCriarConta(false);
+        } else {
+            setExibirBalaoDicaCriarConta(true);
+        }
+    }, []);
+
+    // --------------------------------------
+    // FIM DO - Balao Dica Criar Conta
+    // --------------------------------------
 
 
 
@@ -154,6 +199,12 @@ export default function App() {
     // --------------------------------------
     // FIM DO - Balao Dica Menu Hamburguer
     // --------------------------------------
+
+
+
+
+
+
 
 
 
@@ -777,6 +828,26 @@ export default function App() {
     /* FIM DO - MODAL 🔥 FIREBASE */
     // -------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 
 
 
@@ -1421,9 +1492,51 @@ export default function App() {
                     // ------------------------------------
 
                     <div className="submenu-container-visitante">
-                        <button className="Botao-Acao-Visitante-Perfil" onClick={() => navegarERecolher('/Cadastrar')}>
+
+
+
+
+
+
+
+
+<div style={{ position: 'relative', display: 'inline-block' }}>
+    
+    <button 
+        className={`Botao-Acao-Visitante-Perfil ${exibirBalaoDicaCriarConta ? 'pulsar-ativo' : ''}`} 
+        onClick={() => {
+            // 🔐 1. Lacre da Dica: O usuário clicou, então ele já sabe onde é
+            if (exibirBalaoDicaCriarConta) {
+                const chaveGlobal = "dicaCriarConta_Vista_Global";
+                localStorage.setItem(chaveGlobal, "sim");
+                setExibirBalaoDicaCriarConta(false);
+                console.log("📐 🔵 Lacre Criar Conta realizado via Menu Perfil.");
+            }
+
+            // 🚀 2. Ação de Navegação original
+            navegarERecolher('/Cadastrar');
+        }}
+    >
+        <span>Criar Conta</span>
+    </button>
+
+    {/* 🎈 O Balão de Dica posicionado para este botão */}
+    <BalaoDicaCriarConta 
+        exibirBalaoDicaCriarConta={exibirBalaoDicaCriarConta} 
+    />
+
+</div>
+
+
+
+
+
+
+
+                        {/* <button className="Botao-Acao-Visitante-Perfil" onClick={() => navegarERecolher('/Cadastrar')}>
                             <span>Criar Conta</span>
-                        </button>
+                        </button> */}
+                        
                         <button className="Botao-Acao-Visitante-Perfil" style={{ width: '90px'}} onClick={() => navegarERecolher('/Logar')}>
                             <span>Entrar</span>
                         </button>
