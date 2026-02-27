@@ -255,7 +255,18 @@ const popularCamposEndereco = (dados) => {
 
 
 
-
+    const mascaraNume = (e) => {
+        // 🧱 Trava de segurança da obra
+        if (!podeEditar) return;
+    
+        // 🧱 Limpeza: Aceita apenas números (evita que digitem letras no Nº)
+        let v = e.target.value.replace(/\D/g, '');
+    
+        // 📐 👔 console.log("📐 🏠 numero = ", v);
+    
+        // 💾 Salva na prancheta (Estado)
+        setNumero(v);
+    };
 
 
 
@@ -392,11 +403,13 @@ const popularCamposEndereco = (dados) => {
                             <label>Nº</label>
                             <input 
                                 type="text" 
+                                name="nume"
+                                placeholder="S/N"
                                 disabled={!podeEditar} 
                                 value={numero} 
-                                onChange={(e) => 
-                                setNumero(e.target.value)} />  
-
+                                onChange={mascaraNume} 
+                                autoComplete="address-line2"
+                            />  
                         </div>
 
                         <div className="Campo flex-bairro "> 
